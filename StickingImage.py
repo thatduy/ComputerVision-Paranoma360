@@ -42,92 +42,6 @@ def get_stitched_image(img1, img2, M):
 	# Return the result
 	return result_img
 
-# def merge_images(image1, image2, homography, size, offset):
-#   (h1, w1) = image1.shape[:2] 
-#   #+ 
-#   #(h2, w2) = image2.shape[:2]
-  
-#   panorama = np.zeros((size[1], size[0], 4), np.uint8)
-  
-#   (ox, oy) = offset
-  
-#   translation = np.matrix([
-#     [1.0, 0.0, ox],
-#     [0, 1.0, oy],
-#     [0.0, 0.0, 1.0]
-#   ])
-  
-#   print (homography)
-#   homography = translation * homography
-#   # print homography
-  
-#   # draw the transformed image2
-#   cv2.warpPerspective(image2, homography, size, panorama, flags = cv2.INTER_CUBIC,
-#    borderMode = cv2.BORDER_CONSTANT, borderValue = [0, 0, 0, 0])
-#   print("BEFORE REPLACE HOMO",panorama[oy:h1+oy])
-#   panorama[oy:h1+oy, ox:ox+w1] = image1
-#   print("AFTER REPLACE HOMO",panorama[oy:h1+oy, ox:ox+w1])
-
-#   return panorama
-# def calculate_size(size_image1, size_image2, homography):
-  
-#     (h1, w1) = size_image1[:2]
-#     (h2, w2) = size_image2[:2]
-
-#     #remap the coordinates of the projected image onto the panorama image space
-#     top_left = np.dot(homography,np.asarray([0,0,1]))
-#     top_right = np.dot(homography,np.asarray([w2,0,1]))
-#     bottom_left = np.dot(homography,np.asarray([0,h2,1]))
-#     bottom_right = np.dot(homography,np.asarray([w2,h2,1]))
-
-
-#     print (top_left)
-#     print (top_right)
-#     print (bottom_left)
-#     print (bottom_right)
-
-#     #normalize
-#     top_left = top_left/top_left[2]
-#     top_right = top_right/top_right[2]
-#     bottom_left = bottom_left/bottom_left[2]
-#     bottom_right = bottom_right/bottom_right[2]
-
-#     print (np.int32(top_left))
-#     print (np.int32(top_right))
-#     print (np.int32(bottom_left))
-#     print (np.int32(bottom_right))
-
-#     pano_left = int(min(top_left[0], bottom_left[0], 0))
-#     pano_right = int(max(top_right[0], bottom_right[0], w1))
-#     W = pano_right - pano_left
-
-#     pano_top = int(min(top_left[1], top_right[1], 0))
-#     pano_bottom = int(max(bottom_left[1], bottom_right[1], h1))
-#     H = pano_bottom - pano_top
-
-#     size = (abs(W), abs(H))
-
-#     print ('Panodimensions')
-#     print( pano_top)
-#     print (pano_bottom)
-
-#     # offset of first image relative to panorama
-#     X = int(min(top_left[0], bottom_left[0], 0))
-#     Y = int(min(top_left[1], top_right[1], 0))
-#     offset = (-X, -Y)
-
-#     print ('Calculated size:')
-#     print (size)
-#     print ('Calculated offset:')
-#     print( offset)
-
-#     ## Update the homography to shift by the offset
-#     # does offset need to be remapped to old coord space?
-#     # print homography
-#     #homography[0:2,2] += offset
-
-#     return (size, offset)
-
 def detectAndDescribe(image):
     # convert the image to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -153,6 +67,7 @@ def sticker(imgs):
     # find the keypoints and descriptors with SIFT,call function
     kpRight, desRight = detectAndDescribe(imgRight)
     kpLeft, desLeft = detectAndDescribe(imgLeft)
+    # make image has 4 chanel --> transparent
     imgLeft = cv2.cvtColor(imgLeft, cv2.COLOR_BGR2BGRA)
     imgRight = cv2.cvtColor(imgRight, cv2.COLOR_BGR2BGRA)
     FLANN_INDEX_KDTREE = 0
