@@ -1,7 +1,7 @@
 import StickingImage
 import imutils
 import GlobalVar
-import FindCenter
+import FindRelations
 import cv2
 import os
 from ImageInfo import ImageInfoClass
@@ -18,7 +18,7 @@ def findInfoImage(file1):
             continue
         image1 = imutils.resize(cv2.imread('./test/%s'%file1), width = 400)
         image2 = imutils.resize(cv2.imread('./test/%s'%file2), width = 400)
-        if FindCenter.isRelative([image1, image2]) == True:
+        if FindRelations.isRelative([image1, image2]) == True:
             tempImage.count  = tempImage.count + 1
             tempImage.relatitons.append(file2)
     list_images.append(tempImage)

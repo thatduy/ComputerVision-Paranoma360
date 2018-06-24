@@ -172,7 +172,7 @@ def sticker(imgs):
         src_pts = np.float32([ kpRight[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
         dst_pts = np.float32([ kpLeft[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
         (H, mark) = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-        (size, offset) = calculate_size(imgLeft.shape, imgRight.shape, H)
+        #(size, offset) = calculate_size(imgLeft.shape, imgRight.shape, H)
         result =  get_stitched_image(imgLeft, imgRight, H)
         #merge_images(imgLeft, imgRight, H, size, offset)
         return result
